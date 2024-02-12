@@ -37,7 +37,7 @@ fn main() {
         end_pos_x: 322,
         end_pos_y: 410,
         color: Color::RED,
-        speed: 5,
+        speed: 6,
     };
 
     let mut activated: bool = false;
@@ -77,7 +77,7 @@ fn main() {
             rl.window_should_close();
         }
 
-        if rl.is_mouse_button_pressed(MouseButton::MOUSE_RIGHT_BUTTON) {
+        if rl.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
             activated = true;
         }
 
@@ -97,13 +97,9 @@ fn main() {
             );
             // start the lazers to  move till end of screen
 
-            lazers.start_pos_x += lazers.speed;
-            lazers.star_pos_y += lazers.speed;
-            lazers.end_pos_x += lazers.speed;
-            lazers.end_pos_y += lazers.speed;
+            lazers.star_pos_y -= lazers.speed;
+            lazers.end_pos_y -= lazers.speed;
         };
-
-        //  d.draw_line(311, 274, 311, 203, Color::RED);
 
         println!("{:?}", d.get_mouse_position())
     }
