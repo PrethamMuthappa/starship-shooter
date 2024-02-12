@@ -15,6 +15,7 @@ struct LazerLines {
     end_pos_x: i32,
     end_pos_y: i32,
     color: Color,
+    speed: i32,
 }
 
 fn main() {
@@ -33,9 +34,10 @@ fn main() {
     let mut lazers = LazerLines {
         start_pos_x: 321,
         star_pos_y: 437,
-        end_pos_x: 340,
-        end_pos_y: 450,
+        end_pos_x: 322,
+        end_pos_y: 410,
         color: Color::RED,
+        speed: 5,
     };
 
     let mut activated: bool = false;
@@ -92,8 +94,16 @@ fn main() {
                 lazers.end_pos_x,
                 lazers.end_pos_y,
                 lazers.color,
-            )
-        }
+            );
+            // start the lazers to  move till end of screen
+
+            lazers.start_pos_x += lazers.speed;
+            lazers.star_pos_y += lazers.speed;
+            lazers.end_pos_x += lazers.speed;
+            lazers.end_pos_y += lazers.speed;
+        };
+
+        //  d.draw_line(311, 274, 311, 203, Color::RED);
 
         println!("{:?}", d.get_mouse_position())
     }
