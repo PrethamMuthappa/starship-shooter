@@ -41,12 +41,16 @@ fn main() {
         if rl.is_key_down(KeyboardKey::KEY_UP) | rl.is_key_down(KeyboardKey::KEY_W) {
             imagepos.position.y -= imagepos.speed;
 
-            //   if imagepos.position.y < SCREEN_HEIGHT - 80.0 {
-            //     imagepos.position.y = SCREEN_HEIGHT - 80.0;
-            //};
+            if imagepos.position.y < 5.0 {
+                imagepos.position.y = 5.0
+            }
         }
         if rl.is_key_down(KeyboardKey::KEY_DOWN) | rl.is_key_down(KeyboardKey::KEY_S) {
             imagepos.position.y += imagepos.speed;
+
+            if imagepos.position.y > 450.0 {
+                imagepos.position.y = 450.0;
+            }
         }
 
         if rl.is_key_down(KeyboardKey::KEY_ESCAPE) {
