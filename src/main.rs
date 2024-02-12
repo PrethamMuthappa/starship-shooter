@@ -9,6 +9,14 @@ struct Imagepos {
     speed: f32,
 }
 
+struct LazerLines {
+    start_pos_x: i32,
+    star_pos_y: i32,
+    end_pos_x: i32,
+    end_pos_y: i32,
+    color: Color,
+}
+
 fn main() {
     let (mut rl, thread) = raylib::init()
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
@@ -21,6 +29,16 @@ fn main() {
         position: Vector2 { x: 307.0, y: 442.0 },
         speed: 5.0,
     };
+
+    let mut lazers = LazerLines {
+        start_pos_x: 321,
+        star_pos_y: 437,
+        end_pos_x: 340,
+        end_pos_y: 450,
+        color: Color::RED,
+    };
+
+    let mut activated: bool = false;
 
     let images = rl.load_texture(&thread, "images/Spaceship1.png").unwrap();
 
@@ -57,11 +75,25 @@ fn main() {
             rl.window_should_close();
         }
 
+        if rl.is_mouse_button_pressed(MouseButton::MOUSE_RIGHT_BUTTON) {
+            activated = true;
+        }
+
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::RAYWHITE);
         d.draw_text("RAYLIB GRAPHICS LIBRARY ", 12, 12, 24, Color::BLACK);
 
         d.draw_texture_v(&images, imagepos.position, Color::WHITE);
+
+        if activated == true {
+            d.draw_line(
+                lazers.start_pos_x,
+                lazers.star_pos_y,
+                lazers.end_pos_x,
+                lazers.end_pos_y,
+                lazers.color,
+            )
+        }
 
         println!("{:?}", d.get_mouse_position())
     }
