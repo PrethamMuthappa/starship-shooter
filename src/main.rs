@@ -1,8 +1,8 @@
 use raylib::prelude::*;
 #[allow(unused_imports)]
 use raylib::*;
-const SCREEN_WIDTH: f32 = 640.0;
-const SCREEN_HEIGHT: f32 = 480.0;
+const SCREEN_WIDTH: f32 = 1000.0;
+const SCREEN_HEIGHT: f32 = 690.0;
 
 struct Imagepos {
     position: Vector2,
@@ -27,32 +27,33 @@ fn main() {
         .build();
 
     let mut imagepos = Imagepos {
-        position: Vector2 { x: 307.0, y: 442.0 },
+        position: Vector2 { x: 512.0, y: 645.0 },
         speed: 5.0,
     };
 
     let mut lazers = LazerLines {
-        start_pos_x: 321,
-        star_pos_y: 437,
-        end_pos_x: 322,
-        end_pos_y: 410,
+        start_pos_x: 512,
+        star_pos_y: 645,
+        end_pos_x: 512,
+        end_pos_y: 600,
         color: Color::RED,
-        speed: 6,
+        speed: 10,
     };
 
     let mut activated: bool = false;
-
     let images = rl.load_texture(&thread, "images/Spaceship1.png").unwrap();
-
     while !rl.window_should_close() {
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) | rl.is_key_down(KeyboardKey::KEY_D) {
             imagepos.position.x += imagepos.speed;
+            lazers.start_pos_x = imagepos.position.x as i32;
+
             if imagepos.position.x > SCREEN_WIDTH - 40.0 {
                 imagepos.position.x = SCREEN_WIDTH - 40.0;
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) | rl.is_key_down(KeyboardKey::KEY_A) {
             imagepos.position.x -= imagepos.speed;
+            lazers.end_pos_x = lazers.start_pos_x;
 
             if imagepos.position.x < 4.0 {
                 imagepos.position.x = 4.0;
@@ -60,6 +61,7 @@ fn main() {
         }
         if rl.is_key_down(KeyboardKey::KEY_UP) | rl.is_key_down(KeyboardKey::KEY_W) {
             imagepos.position.y -= imagepos.speed;
+            lazers.star_pos_y = imagepos.position.y as i32;
 
             if imagepos.position.y < 5.0 {
                 imagepos.position.y = 5.0
@@ -67,9 +69,10 @@ fn main() {
         }
         if rl.is_key_down(KeyboardKey::KEY_DOWN) | rl.is_key_down(KeyboardKey::KEY_S) {
             imagepos.position.y += imagepos.speed;
+            //lazers.end_pos_y = lazers.star_pos_y - 10 as i32;
 
-            if imagepos.position.y > 450.0 {
-                imagepos.position.y = 450.0;
+            if imagepos.position.y > 645.0 {
+                imagepos.position.y = 645.0;
             }
         }
 
@@ -91,8 +94,8 @@ fn main() {
             d.draw_line(
                 lazers.start_pos_x,
                 lazers.star_pos_y,
-                lazers.end_pos_x,
-                lazers.end_pos_y,
+                lazers.start_pos_x,
+                lazers.star_pos_y - 190,
                 lazers.color,
             );
             // start the lazers to  move till end of screen
@@ -101,6 +104,10 @@ fn main() {
             lazers.end_pos_y -= lazers.speed;
         };
 
-        println!("{:?}", d.get_mouse_position())
+        //  println!("{:?}", d.get_mouse_position());
+        println!("start x {:?}", lazers.start_pos_x);
+        println!(" end pos x{:?}", lazers.end_pos_x);
+        // println!("{:?}", lazers.start_pos_x);
+        // println!("{:?}", lazers.start_pos_x);
     }
 }
