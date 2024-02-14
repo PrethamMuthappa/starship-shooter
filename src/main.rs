@@ -18,6 +18,10 @@ struct LazerLines {
     speed: i32,
 }
 
+struct BackgroudImage {
+    pos: Vector2,
+}
+
 fn main() {
     let (mut rl, thread) = raylib::init()
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
@@ -31,6 +35,10 @@ fn main() {
         speed: 5.0,
     };
 
+    let mut backs = BackgroudImage {
+        pos: Vector2 { x: 0.0, y: 00.0 },
+    };
+
     let mut lazers = LazerLines {
         start_pos_x: 512,
         star_pos_y: 645,
@@ -41,6 +49,7 @@ fn main() {
     };
 
     let mut activated: bool = false;
+    let back = rl.load_texture(&thread, "images/p.png").unwrap();
     let images = rl.load_texture(&thread, "images/Spaceship1.png").unwrap();
     while !rl.window_should_close() {
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) | rl.is_key_down(KeyboardKey::KEY_D) {
@@ -53,7 +62,7 @@ fn main() {
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) | rl.is_key_down(KeyboardKey::KEY_A) {
             imagepos.position.x -= imagepos.speed;
-            lazers.end_pos_x = lazers.start_pos_x;
+            lazers.start_pos_x = imagepos.position.x as i32;
 
             if imagepos.position.x < 4.0 {
                 imagepos.position.x = 4.0;
@@ -69,7 +78,7 @@ fn main() {
         }
         if rl.is_key_down(KeyboardKey::KEY_DOWN) | rl.is_key_down(KeyboardKey::KEY_S) {
             imagepos.position.y += imagepos.speed;
-            //lazers.end_pos_y = lazers.star_pos_y - 10 as i32;
+            lazers.end_pos_y = imagepos.position.y as i32;
 
             if imagepos.position.y > 645.0 {
                 imagepos.position.y = 645.0;
@@ -88,6 +97,7 @@ fn main() {
         d.clear_background(Color::RAYWHITE);
         d.draw_text("RAYLIB GRAPHICS LIBRARY ", 12, 12, 24, Color::BLACK);
 
+        d.draw_texture_v(&back, backs.pos, Color::WHITE);
         d.draw_texture_v(&images, imagepos.position, Color::WHITE);
 
         if activated == true {
@@ -95,7 +105,7 @@ fn main() {
                 lazers.start_pos_x,
                 lazers.star_pos_y,
                 lazers.start_pos_x,
-                lazers.star_pos_y - 190,
+                lazers.star_pos_y - 30,
                 lazers.color,
             );
             // start the lazers to  move till end of screen
