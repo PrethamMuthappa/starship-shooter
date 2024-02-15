@@ -1,3 +1,4 @@
+use rand::*;
 use raylib::prelude::*;
 #[allow(unused_imports)]
 use raylib::*;
@@ -7,6 +8,7 @@ const SCREEN_HEIGHT: f32 = 690.0;
 struct Imagepos {
     position: Vector2,
     speed: f32,
+    color: Color,
 }
 
 #[allow(dead_code)]
@@ -24,6 +26,14 @@ struct BackgroudImage {
     color: Color,
 }
 
+struct Asteiods {
+    x: f32,
+    y: f32,
+    width: f32,
+    height: f32,
+    speed: f32,
+}
+
 fn main() {
     let (mut rl, thread) = raylib::init()
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
@@ -34,6 +44,7 @@ fn main() {
     let mut imagepos = Imagepos {
         position: Vector2 { x: 512.0, y: 645.0 },
         speed: 5.0,
+        color: Color::WHITE,
     };
 
     let backs = BackgroudImage {
@@ -49,6 +60,16 @@ fn main() {
         color: Color::RED,
         speed: 10,
     };
+
+    let asteriods = Asteiods {
+        x: rand::thread_rng().gen_range(0.0..SCREEN_WIDTH),
+        y: rand::thread_rng().gen_range(0.0..SCREEN_HEIGHT),
+        width: 50.0,
+        height: 80.0,
+        speed: 2.0,
+    };
+
+    let mut rects = Rectangle::new(asteriods.x, asteriods.y, asteriods.width, asteriods.height);
 
     let mut activated: bool = false;
     let back = rl.load_texture(&thread, "images/p.png").unwrap();
@@ -95,12 +116,16 @@ fn main() {
             activated = true;
         }
 
+        if rl.is_window_ready() {
+            rects.x += asteriods.speed;
+            rects.y += asteriods.speed;
+        }
+
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::RAYWHITE);
         d.draw_texture_v(&back, backs.pos, backs.color);
-
-        d.draw_texture_v(&images, imagepos.position, Color::WHITE);
-
+        d.draw_texture_v(&images, imagepos.position, imagepos.color);
+        d.draw_rectangle_rec(&rects, Color::RED);
         if activated == true {
             d.draw_line(
                 lazers.start_pos_x,
