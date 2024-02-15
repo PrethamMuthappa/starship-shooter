@@ -21,6 +21,7 @@ struct LazerLines {
 
 struct BackgroudImage {
     pos: Vector2,
+    color: Color,
 }
 
 fn main() {
@@ -37,6 +38,7 @@ fn main() {
 
     let backs = BackgroudImage {
         pos: Vector2 { x: 0.0, y: 00.0 },
+        color: Color::WHITE,
     };
 
     let mut lazers = LazerLines {
@@ -95,7 +97,8 @@ fn main() {
 
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::RAYWHITE);
-        d.draw_texture_v(&back, backs.pos, Color::WHITE);
+        d.draw_texture_v(&back, backs.pos, backs.color);
+
         d.draw_texture_v(&images, imagepos.position, Color::WHITE);
 
         if activated == true {
