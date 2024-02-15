@@ -63,9 +63,9 @@ fn main() {
 
     let asteriods = Asteiods {
         x: rand::thread_rng().gen_range(0.0..SCREEN_WIDTH),
-        y: rand::thread_rng().gen_range(0.0..SCREEN_HEIGHT),
-        width: 50.0,
-        height: 80.0,
+        y: 0.0,
+        width: rand::thread_rng().gen_range(0.0..35.10),
+        height: rand::thread_rng().gen_range(0.0..32.2),
         speed: 2.0,
     };
 
