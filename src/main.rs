@@ -9,6 +9,7 @@ struct Imagepos {
     speed: f32,
 }
 
+#[allow(dead_code)]
 struct LazerLines {
     start_pos_x: i32,
     star_pos_y: i32,
@@ -26,7 +27,6 @@ fn main() {
     let (mut rl, thread) = raylib::init()
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
         .title("my raylib app")
-        .resizable()
         .vsync()
         .build();
 
@@ -35,7 +35,7 @@ fn main() {
         speed: 5.0,
     };
 
-    let mut backs = BackgroudImage {
+    let backs = BackgroudImage {
         pos: Vector2 { x: 0.0, y: 00.0 },
     };
 
@@ -95,8 +95,6 @@ fn main() {
 
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::RAYWHITE);
-        d.draw_text("RAYLIB GRAPHICS LIBRARY ", 12, 12, 24, Color::BLACK);
-
         d.draw_texture_v(&back, backs.pos, Color::WHITE);
         d.draw_texture_v(&images, imagepos.position, Color::WHITE);
 
@@ -113,11 +111,5 @@ fn main() {
             lazers.star_pos_y -= lazers.speed;
             lazers.end_pos_y -= lazers.speed;
         };
-
-        //  println!("{:?}", d.get_mouse_position());
-        println!("start x {:?}", lazers.start_pos_x);
-        println!(" end pos x{:?}", lazers.end_pos_x);
-        // println!("{:?}", lazers.start_pos_x);
-        // println!("{:?}", lazers.start_pos_x);
     }
 }
