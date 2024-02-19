@@ -42,13 +42,13 @@ fn main() {
         .build();
 
     let mut imagepos = Imagepos {
-        position: Vector2 { x: 512.0, y: 645.0 },
+        position: Vector2 { x: 476.0, y: 611.0 },
         speed: 5.0,
         color: Color::WHITE,
     };
 
     let backs = BackgroudImage {
-        pos: Vector2 { x: 0.0, y: 00.0 },
+        pos: Vector2 { x: 0.0, y: -99.0 },
         color: Color::WHITE,
     };
 
@@ -72,15 +72,15 @@ fn main() {
     let mut rects = Rectangle::new(asteriods.x, asteriods.y, asteriods.width, asteriods.height);
 
     let mut activated: bool = false;
-    let back = rl.load_texture(&thread, "images/p.png").unwrap();
-    let images = rl.load_texture(&thread, "images/Spaceship1.png").unwrap();
+    let back = rl.load_texture(&thread, "images/space.png").unwrap();
+    let images = rl.load_texture(&thread, "images/ship0.png").unwrap();
     while !rl.window_should_close() {
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) | rl.is_key_down(KeyboardKey::KEY_D) {
             imagepos.position.x += imagepos.speed;
             lazers.start_pos_x = imagepos.position.x as i32;
 
-            if imagepos.position.x > SCREEN_WIDTH - 40.0 {
-                imagepos.position.x = SCREEN_WIDTH - 40.0;
+            if imagepos.position.x > SCREEN_WIDTH - 90.0 {
+                imagepos.position.x = SCREEN_WIDTH - 90.0;
             }
         }
         if rl.is_key_down(KeyboardKey::KEY_LEFT) | rl.is_key_down(KeyboardKey::KEY_A) {
@@ -103,8 +103,8 @@ fn main() {
             imagepos.position.y += imagepos.speed;
             lazers.end_pos_y = imagepos.position.y as i32;
 
-            if imagepos.position.y > 645.0 {
-                imagepos.position.y = 645.0;
+            if imagepos.position.y > 611.0 {
+                imagepos.position.y = 611.0;
             }
         }
 
