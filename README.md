@@ -23,11 +23,13 @@ Git clone repo
 ``
 
 Libraries required  
-``
+```
 sudo apt install cmake (add this to path)
-``
+```
 
-``sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev``
+```
+sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev
+```
 
 ---
 
