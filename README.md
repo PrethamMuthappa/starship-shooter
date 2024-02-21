@@ -18,9 +18,9 @@ Left: A/ left-key
 ---
 ### Installation
 
-``
-Git clone repo
-``
+```
+Git clone repo https://github.com/PrethamMuthappa/raylib-game.git
+```
 
 Libraries required  
 ```
