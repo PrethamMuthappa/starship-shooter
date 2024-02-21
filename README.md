@@ -1,15 +1,20 @@
 
 # Starship shooter
 
-A simple 2D space shooter game built with raylib and rust
-currently only tested in linux
-![img.png](img.png)
+A simple 2D space shooter game built with raylib and rust  
 
-### Controls
+Currently only tested in linux (still under development)
+
+![Screenshot from 2024-02-21 18-42-59](https://github.com/PrethamMuthappa/raylib-game/assets/98420696/562d819a-8c3f-4a6d-85be-4420c93606b0)
+
+
+### Controls  
+
 Up: W / up-key  
 Down: S/ down-key  
 Right: D/ right-key  
 Left: A/ left-key
+
 ---
 ### Installation
 
