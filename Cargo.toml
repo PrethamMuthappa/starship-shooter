@@ -8,4 +8,4 @@ edition = "2021"
 
 [dependencies]
 rand = "0.8.5"
-raylib = { version = "3.7" }
+raylib = { version = "3.7"}

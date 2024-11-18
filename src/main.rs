@@ -96,7 +96,7 @@ fn main() {
     let mut score_counter=ScoreCounter{score:0};
 
     while !rl.window_should_close() {
-        
+
         if !game_over {
         score_counter.score+=1;
         }
@@ -180,7 +180,7 @@ fn main() {
         d.draw_texture_v(&images, imagepos.position, imagepos.color);
         d.draw_texture(&enemy, 112, 80, Color::WHITE);
         d.draw_text(&score_counter.score.to_string(), 35, 10, 20, Color::WHITE);
-        
+
         // Draw all asteroids
         for rect in &rects_vec {
             d.draw_rectangle_rec(rect, Color::RED);
@@ -227,6 +227,6 @@ fn main() {
             backs.speed = 0.0;
         }
 
-        println!("{:?}", d.get_mouse_position());
+       // println!("{:?}", d.get_mouse_position());
     }
 }
