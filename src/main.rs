@@ -22,8 +22,10 @@ struct LazerLines {
 }
 
 struct BackgroudImage {
-    pos: Vector2,
+    pos1: Vector2,
+    pos2: Vector2,
     color: Color,
+    speed: f32,
 }
 
 struct Asteiods {
@@ -47,9 +49,11 @@ fn main() {
         color: Color::WHITE,
     };
 
-    let backs = BackgroudImage {
-        pos: Vector2 { x: 0.0, y: -99.0 },
+    let mut backs = BackgroudImage {
+        pos1: Vector2 { x: 0.0, y: 0.0 },
+        pos2: Vector2 { x: 0.0, y: -SCREEN_HEIGHT },
         color: Color::WHITE,
+        speed: 5.0,
     };
 
     let mut lazers = LazerLines {
@@ -85,6 +89,18 @@ fn main() {
     let enemy = rl.load_texture(&thread, "images/enemy_3.png").unwrap();
     let mut game_over = false;
     while !rl.window_should_close() {
+          
+        backs.pos1.y += backs.speed;
+        backs.pos2.y += backs.speed;
+
+        if backs.pos1.y >= SCREEN_HEIGHT {
+            backs.pos1.y = -SCREEN_HEIGHT;
+        }
+
+        if backs.pos2.y >= SCREEN_HEIGHT {
+            backs.pos2.y = -SCREEN_HEIGHT;
+        }
+
         if !game_over {
             if rl.is_key_down(KeyboardKey::KEY_RIGHT) | rl.is_key_down(KeyboardKey::KEY_D) {
                 imagepos.position.x += imagepos.speed;
@@ -147,7 +163,8 @@ fn main() {
 
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::RAYWHITE);
-        d.draw_texture_v(&back, backs.pos, backs.color);
+        d.draw_texture_v(&back, backs.pos1, backs.color);
+        d.draw_texture_v(&back, backs.pos2, backs.color);
         d.draw_texture_v(&images, imagepos.position, imagepos.color);
         d.draw_texture(&enemy, 112, 80, Color::WHITE);
         
@@ -193,6 +210,8 @@ fn main() {
                 40, 
                 Color::RED
             );
+
+            backs.speed = 0.0;
         }
 
         println!("{:?}", d.get_mouse_position());
