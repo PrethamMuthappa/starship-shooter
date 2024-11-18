@@ -3,7 +3,7 @@
 
 A simple 2D space shooter game built with raylib and rust  
 
-Currently only tested in linux (still under development)
+Currently only tested and runs in linux 
 
 ![Screenshot from 2024-02-21 18-42-59](https://github.com/PrethamMuthappa/raylib-game/assets/98420696/562d819a-8c3f-4a6d-85be-4420c93606b0)
 
