@@ -22,6 +22,16 @@ Left: A/ left-key
 Git clone repo https://github.com/PrethamMuthappa/raylib-game.git
 ```
 
+Can also be run using the executable file in the release section
+
+Download the executable file from the release section put it in a folder also download the image directory to the same folder
+
+```
+chmod +x starship
+
+./starship
+```
+
 Libraries required  
 ```
 sudo apt install cmake (add this to path)
