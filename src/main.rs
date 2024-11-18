@@ -58,22 +58,31 @@ fn main() {
         end_pos_x: 512,
         end_pos_y: 600,
         color: Color::RED,
-        speed: 10,
+        speed: 11,
     };
 
-    let asteriods = Asteiods {
-        x: rand::thread_rng().gen_range(0.0..SCREEN_WIDTH),
-        y: 0.0,
-        width: rand::thread_rng().gen_range(0.0..35.10),
-        height: rand::thread_rng().gen_range(0.0..32.2),
-        speed: 2.0,
-    };
-
-    let mut rects = Rectangle::new(asteriods.x, asteriods.y, asteriods.width, asteriods.height);
+    let mut asteroids_vec: Vec<Asteiods> = Vec::new();
+    let mut rects_vec: Vec<Rectangle> = Vec::new();
+    
+    for _ in 0..5 {  // Start with 5 asteroids
+        let asteroid = Asteiods {
+            x: rand::thread_rng().gen_range(0.0..SCREEN_WIDTH),
+            y: rand::thread_rng().gen_range(-600.0..0.0), // Stagger initial positions
+            width: rand::thread_rng().gen_range(20.0..35.0),
+            height: rand::thread_rng().gen_range(20.0..35.0),
+            speed: rand::thread_rng().gen_range(2.0..5.0), // Random speeds
+        };
+        
+        let rect = Rectangle::new(asteroid.x, asteroid.y, asteroid.width, asteroid.height);
+        
+        asteroids_vec.push(asteroid);
+        rects_vec.push(rect);
+    }
 
     let mut activated: bool = false;
     let back = rl.load_texture(&thread, "images/space.png").unwrap();
     let images = rl.load_texture(&thread, "images/ship0.png").unwrap();
+    let enemy = rl.load_texture(&thread, "images/enemy_3.png").unwrap();
     while !rl.window_should_close() {
         if rl.is_key_down(KeyboardKey::KEY_RIGHT) | rl.is_key_down(KeyboardKey::KEY_D) {
             imagepos.position.x += imagepos.speed;
@@ -117,15 +126,33 @@ fn main() {
         }
 
         if rl.is_window_ready() {
-            rects.x += asteriods.speed;
-            rects.y += asteriods.speed;
+            // Update all asteroids
+            for i in 0..asteroids_vec.len() {
+                asteroids_vec[i].y += asteroids_vec[i].speed;
+                rects_vec[i].x = asteroids_vec[i].x;
+                rects_vec[i].y = asteroids_vec[i].y;
+
+                // Reset asteroid when it goes off screen
+                if asteroids_vec[i].y > SCREEN_HEIGHT {
+                    asteroids_vec[i].y = 0.0;
+                    asteroids_vec[i].x = rand::thread_rng().gen_range(0.0..SCREEN_WIDTH);
+                    rects_vec[i].x = asteroids_vec[i].x;
+                    rects_vec[i].y = asteroids_vec[i].y;
+                }
+            }
         }
 
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::RAYWHITE);
         d.draw_texture_v(&back, backs.pos, backs.color);
         d.draw_texture_v(&images, imagepos.position, imagepos.color);
-        d.draw_rectangle_rec(&rects, Color::RED);
+        d.draw_texture(&enemy, 112, 80, Color::WHITE);
+        
+        // Draw all asteroids
+        for rect in &rects_vec {
+            d.draw_rectangle_rec(rect, Color::RED);
+        }
+
         if activated == true {
             d.draw_line(
                 lazers.start_pos_x,
@@ -139,5 +166,7 @@ fn main() {
             lazers.star_pos_y -= lazers.speed;
             lazers.end_pos_y -= lazers.speed;
         };
+
+        println!("{:?}", d.get_mouse_position());
     }
 }
