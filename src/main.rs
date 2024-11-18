@@ -83,37 +83,40 @@ fn main() {
     let back = rl.load_texture(&thread, "images/space.png").unwrap();
     let images = rl.load_texture(&thread, "images/ship0.png").unwrap();
     let enemy = rl.load_texture(&thread, "images/enemy_3.png").unwrap();
+    let mut game_over = false;
     while !rl.window_should_close() {
-        if rl.is_key_down(KeyboardKey::KEY_RIGHT) | rl.is_key_down(KeyboardKey::KEY_D) {
-            imagepos.position.x += imagepos.speed;
-            lazers.start_pos_x = imagepos.position.x as i32;
+        if !game_over {
+            if rl.is_key_down(KeyboardKey::KEY_RIGHT) | rl.is_key_down(KeyboardKey::KEY_D) {
+                imagepos.position.x += imagepos.speed;
+                lazers.start_pos_x = imagepos.position.x as i32;
 
-            if imagepos.position.x > SCREEN_WIDTH - 90.0 {
-                imagepos.position.x = SCREEN_WIDTH - 90.0;
+                if imagepos.position.x > SCREEN_WIDTH - 90.0 {
+                    imagepos.position.x = SCREEN_WIDTH - 90.0;
+                }
             }
-        }
-        if rl.is_key_down(KeyboardKey::KEY_LEFT) | rl.is_key_down(KeyboardKey::KEY_A) {
-            imagepos.position.x -= imagepos.speed;
-            lazers.start_pos_x = imagepos.position.x as i32;
+            if rl.is_key_down(KeyboardKey::KEY_LEFT) | rl.is_key_down(KeyboardKey::KEY_A) {
+                imagepos.position.x -= imagepos.speed;
+                lazers.start_pos_x = imagepos.position.x as i32;
 
-            if imagepos.position.x < 4.0 {
-                imagepos.position.x = 4.0;
+                if imagepos.position.x < 4.0 {
+                    imagepos.position.x = 4.0;
+                }
             }
-        }
-        if rl.is_key_down(KeyboardKey::KEY_UP) | rl.is_key_down(KeyboardKey::KEY_W) {
-            imagepos.position.y -= imagepos.speed;
-            lazers.star_pos_y = imagepos.position.y as i32;
+            if rl.is_key_down(KeyboardKey::KEY_UP) | rl.is_key_down(KeyboardKey::KEY_W) {
+                imagepos.position.y -= imagepos.speed;
+                lazers.star_pos_y = imagepos.position.y as i32;
 
-            if imagepos.position.y < 5.0 {
-                imagepos.position.y = 5.0
+                if imagepos.position.y < 5.0 {
+                    imagepos.position.y = 5.0
+                }
             }
-        }
-        if rl.is_key_down(KeyboardKey::KEY_DOWN) | rl.is_key_down(KeyboardKey::KEY_S) {
-            imagepos.position.y += imagepos.speed;
-            lazers.end_pos_y = imagepos.position.y as i32;
+            if rl.is_key_down(KeyboardKey::KEY_DOWN) | rl.is_key_down(KeyboardKey::KEY_S) {
+                imagepos.position.y += imagepos.speed;
+                lazers.end_pos_y = imagepos.position.y as i32;
 
-            if imagepos.position.y > 611.0 {
-                imagepos.position.y = 611.0;
+                if imagepos.position.y > 611.0 {
+                    imagepos.position.y = 611.0;
+                }
             }
         }
 
@@ -153,6 +156,21 @@ fn main() {
             d.draw_rectangle_rec(rect, Color::RED);
         }
 
+        // Create a rectangle for the player ship
+        let player_rect = Rectangle::new(
+            imagepos.position.x, 
+            imagepos.position.y, 
+            80.0,  // adjust these values based on your ship's size
+            80.0
+        );
+
+        // Check collisions with all asteroids
+        for rect in &rects_vec {
+            if player_rect.check_collision_recs(rect) {
+                game_over = true;
+            }
+        }
+
         if activated == true {
             d.draw_line(
                 lazers.start_pos_x,
@@ -166,6 +184,16 @@ fn main() {
             lazers.star_pos_y -= lazers.speed;
             lazers.end_pos_y -= lazers.speed;
         };
+
+        if game_over {
+            d.draw_text(
+                "GAME OVER! Press ESC to exit", 
+                (SCREEN_WIDTH/2.0 - 150.0) as i32, 
+                (SCREEN_HEIGHT/2.0) as i32, 
+                40, 
+                Color::RED
+            );
+        }
 
         println!("{:?}", d.get_mouse_position());
     }
