@@ -36,6 +36,10 @@ struct Asteiods {
     speed: f32,
 }
 
+#[derive(Debug)]
+struct ScoreCounter {
+    score:i32,
+}
 fn main() {
     let (mut rl, thread) = raylib::init()
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
@@ -88,8 +92,16 @@ fn main() {
     let images = rl.load_texture(&thread, "images/ship0.png").unwrap();
     let enemy = rl.load_texture(&thread, "images/enemy_3.png").unwrap();
     let mut game_over = false;
+
+    let mut score_counter=ScoreCounter{score:0};
+
     while !rl.window_should_close() {
-          
+        
+        if !game_over {
+        score_counter.score+=1;
+        }
+
+     
         backs.pos1.y += backs.speed;
         backs.pos2.y += backs.speed;
 
@@ -167,6 +179,7 @@ fn main() {
         d.draw_texture_v(&back, backs.pos2, backs.color);
         d.draw_texture_v(&images, imagepos.position, imagepos.color);
         d.draw_texture(&enemy, 112, 80, Color::WHITE);
+        d.draw_text(&score_counter.score.to_string(), 35, 10, 20, Color::WHITE);
         
         // Draw all asteroids
         for rect in &rects_vec {
@@ -204,11 +217,11 @@ fn main() {
 
         if game_over {
             d.draw_text(
-                "GAME OVER! Press ESC to exit", 
+                &format!("GAME OVER! Press ESC to exit: Score: {}", score_counter.score), 
                 (SCREEN_WIDTH/2.0 - 150.0) as i32, 
                 (SCREEN_HEIGHT/2.0) as i32, 
-                40, 
-                Color::RED
+                20, 
+                Color::WHITE
             );
 
             backs.speed = 0.0;
